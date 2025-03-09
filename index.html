@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Ganti Halaman</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            transition: opacity 1s;
+        }
+        h1 {
+            font-size: 32px;
+            color: red;
+        }
+        p {
+            font-size: 18px;
+            color: cyan;
+        }
+    </style>
+</head>
+<body>
+    <h1>Halaman Akan Berganti...</h1>
+    <p>Tunggu 3 detik...</p>
+
+    <script>
+        document.body.style.opacity = "0"; // Efek fade-in dari hitam
+        setTimeout(() => { document.body.style.opacity = "1"; }, 500);
+
+        setTimeout(function() {
+            var pages = ["index.html", "halaman1.html", "halaman2.html", "halaman3.html", "halaman4.html"];
+            var randomPage = pages[Math.floor(Math.random() * pages.length)];
+            window.location.href = randomPage;
+        }, 3000); // Auto redirect setelah 3 detik
+    </script>
+</body>
+</html>
